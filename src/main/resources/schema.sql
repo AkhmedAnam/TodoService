@@ -16,10 +16,6 @@ add foreign key (userId) references ListUser(id);
 
 create table if not exists TodoElement(
 id identity,
-listId bigint not null,
 content text not null,
 done bit not null 
 );
-
-alter table TodoElement
-add foreign key (listId) references TodoList(id);

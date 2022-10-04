@@ -14,8 +14,10 @@ import ru.ahmed.anam.todoservice.domain.User;
 import ru.ahmed.anam.todoservice.repositories.TodoElementRepository;
 import ru.ahmed.anam.todoservice.repositories.TodoListRepository;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.logging.Level;
+import java.util.stream.Collectors;
 
 @Log
 @RestController
@@ -55,10 +57,15 @@ public class TodoListController {
     public TodoList postTodoList(@RequestBody TodoList todoList){
         final User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         todoList.setUser(user);
+        List<TodoElement> todoListElements = todoList.getElements();
+        todoListElements = todoListElements.stream()
+                .map(elementRepository::save)
+                .collect(Collectors.toList());
+        todoList.setElements(todoListElements);
         return listRepository.save(todoList);
     }
 
-    @DeleteMapping(path = "/{listId}", consumes = "application/json")
+    @DeleteMapping(path = "/{listId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteTodoList(@PathVariable("listId") Long listId){
         try {
@@ -73,6 +80,7 @@ public class TodoListController {
         final Optional<TodoElement> optTodoElement = elementRepository.findById(elementId);
         if(optTodoElement.isPresent()){
             final TodoElement updatedTodoElement = optTodoElement.get().done();
+            elementRepository.save(updatedTodoElement);
             return new ResponseEntity<>(updatedTodoElement, HttpStatus.OK);
         } else {
             return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);

@@ -23,6 +23,7 @@ public class TodoList implements Serializable {
     @ManyToOne
     @JoinColumn(name = "userId", nullable = false)
     private User user;
-    @OneToMany(mappedBy = "list")
+    private String title;
+    @OneToMany
     private List<TodoElement> elements;
 }

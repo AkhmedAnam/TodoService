@@ -19,9 +19,6 @@ public class TodoElement implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    @ManyToOne
-    @JoinColumn(name = "listId", nullable = false)
-    private TodoList list;
     private String text;
     private boolean done;
 

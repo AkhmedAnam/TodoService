@@ -1,1 +1,10 @@
+spring:
+  h2:
+    console:
+      enabled: true
+      path: /h2
 
+logging:
+  level:
+    org:
+      springframework: debug
