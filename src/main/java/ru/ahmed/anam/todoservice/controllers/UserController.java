@@ -44,7 +44,7 @@ public class UserController {
             return new ResponseEntity<>(null, HttpStatus.CONFLICT);
         } else {
             user.setPassword(passwordEncoder.encode(password));
-            return new ResponseEntity<>(userRepository.save(user), HttpStatus.OK);
+            return new ResponseEntity<>(userRepository.save(user), HttpStatus.CREATED);
         }
     }
 }
